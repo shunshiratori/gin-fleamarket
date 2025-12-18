@@ -18,10 +18,11 @@ func main() {
 
 	itemMemoryRepository := repositoties.NewItemMemoryRepository(items)
 	itemService := services.NewItemService(itemMemoryRepository)
-	itemControlloer := contorollers.NewItemController(itemService)
+	itemController := contorollers.NewItemController(itemService)
 
 	router := gin.Default()
-	router.GET("/items", itemControlloer.FindAll)
-	router.GET("/items/:id", itemControlloer.FindById)
+	router.GET("/items", itemController.FindAll)
+	router.GET("/items/:id", itemController.FindById)
+	router.POST("/items", itemController.Create)
 	router.Run() // デフォルトで0.0.0.0:8080で待機します
 }

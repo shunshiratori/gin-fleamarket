@@ -1,20 +1,22 @@
 package services
 
 import (
+	"gin-fleamarket/dto"
 	"gin-fleamarket/models"
-	repositoties "gin-fleamarket/repositories"
+	repositories "gin-fleamarket/repositories"
 )
 
 type IItemService interface {
 	FindAll() (*[]models.Item, error)
 	FindById(itemId uint) (*models.Item, error)
+	Create(createItemInput dto.CreateItemInput) (*models.Item, error)
 }
 
 type ItemService struct {
-	repository repositoties.IItemRepository
+	repository repositories.IItemRepository
 }
 
-func NewItemService(repository repositoties.IItemRepository) IItemService {
+func NewItemService(repository repositories.IItemRepository) IItemService {
 	return &ItemService{repository: repository}
 }
 
@@ -24,4 +26,14 @@ func (s ItemService) FindAll() (*[]models.Item, error) {
 
 func (s *ItemService) FindById(itemId uint) (*models.Item, error) {
 	return s.repository.FindById(itemId)
+}
+
+func (s *ItemService) Create(createItemInput dto.CreateItemInput) (*models.Item, error) {
+	newItem := models.Item{
+		Name:        createItemInput.Name,
+		Price:       createItemInput.Price,
+		Description: createItemInput.Description,
+		SoldOut:     false,
+	}
+	return s.repository.Create(newItem)
 }

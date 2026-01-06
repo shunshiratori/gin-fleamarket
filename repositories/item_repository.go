@@ -3,6 +3,8 @@ package repositoties
 import (
 	"errors"
 	"gin-fleamarket/models"
+
+	"gorm.io/gorm"
 )
 
 type IItemRepository interface {
@@ -58,4 +60,12 @@ func (r *ItemMemoryRepository) Delete(ItemID uint) error {
 		}
 	}
 	return errors.New("Item not found")
+}
+
+type ItemRepository struct {
+	db *gorm.DB
+}
+
+func NewItemRepository(db *gorm.DB) ItemRepository {
+	return &ItemRepository{db: db}
 }
